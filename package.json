@@ -11,6 +11,8 @@
     "server"
   ],
   "scripts": {
+    "test": "yarn workspaces foreach -p -v -i run test",
+    "lint": "yarn workspaces foreach -p -v -i run lint",
     "start": "yarn workspaces foreach -p -v -i run start",
     "preview": "yarn workspaces foreach -p -v -i run preview"
   },
