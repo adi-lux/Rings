@@ -1,0 +1,21 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "nodemon ./src/index.ts",
+    "preview": "nodemon ./src/index.ts"
+  },
+  "dependencies": {
+    "cross-env": "5.0.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mongoose": "^6.5.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^18.7.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  }
+}

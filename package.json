@@ -1,0 +1,18 @@
+{
+  "name": "jot-blog",
+  "version": "1.0.0",
+  "description": "Blogging website that includes RTC",
+  "main": "index.js",
+  "author": "Adithya Anandsaikrishnan",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "start": "yarn workspaces foreach -p -v -i run start",
+    "preview": "yarn workspaces foreach -p -v -i run preview"
+  },
+  "packageManager": "yarn@3.2.2"
+}
