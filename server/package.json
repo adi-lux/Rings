@@ -6,7 +6,7 @@
     "lint": "eslint --ext .ts --ignore-path .gitignore --fix src",
     "start": "nodemon ./src/index.ts",
     "preview": "nodemon ./src/index.ts",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -26,17 +26,13 @@
     ]
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
     "cross-env": "5.0.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "express-session": "^1.17.3",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.5.2",
-    "passport": "^0.6.0",
-    "passport-jwt": "^4.0.0"
+    "express-openid-connect": "^2.8.0",
+    "mongoose": "^6.5.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
