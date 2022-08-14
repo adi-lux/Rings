@@ -1,15 +1,16 @@
 import express from 'express';
-import {requiresAuth} from 'express-openid-connect';
 
 const router = express.Router();
 
 // oidc
 router.get('/', (req, res) => {
-  res.json({data: 'Hellos world!'});
+
+
+  res.json(req.auth);
 });
 
-router.get('/profile', requiresAuth(), (req, res) => {
-  res.json(req.oidc.user);
+router.get('/profile', (req, res) => {
+  res.json(req);
 });
 
 

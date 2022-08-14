@@ -1,2 +1,2 @@
-const Users = () => <div></div>
+const Users = () => <div>Users</div>
 export default Users

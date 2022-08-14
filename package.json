@@ -16,5 +16,8 @@
     "start": "yarn workspaces foreach -p -v -i run start",
     "preview": "yarn workspaces foreach -p -v -i run preview"
   },
-  "packageManager": "yarn@3.2.2"
+  "packageManager": "yarn@3.2.2",
+  "devDependencies": {
+    "@types/auth0": "^2.35.3"
+  }
 }
