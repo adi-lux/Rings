@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 
-export function Blogs() {
+export function Drafts(props) {
+  const { user } : string = props;
   const { userName } = useParams();
   const { getAccessTokenSilently } = useAuth0();
   const [blogPosts, setBlogPosts] = useState<string[]>([]);
-
   useEffect(() => {
     getAccessTokenSilently({
       audience: import.meta.env.VITE_AUDIENCE,
@@ -17,21 +17,26 @@ export function Blogs() {
     ))
       .then((response) => {
         const blogsList = response.data;
-        setBlogPosts(blogsList.filter(({ published } : { published: boolean }) => published));
+        setBlogPosts(blogsList.filter(({ published }: { published: boolean }) => !published));
       });
   }, []);
 
   return (
-    <div>
-      {blogPosts.map((blogPost) => (
-        <>
-          <b>Title:</b>
-          {' '}
-          <Link to={`${encodeURIComponent(blogPost._id)}`}>{blogPost.title}</Link>
-          <br />
-        </>
-      ))}
-    </div>
+    <>
+      {user === userName && (
+      <div>
+        {blogPosts.map((blogPost) => (
+          <>
+            <b>Title:</b>
+            {' '}
+            <Link to={`${encodeURIComponent(blogPost._id)}`}>{blogPost.title}</Link>
+            <br />
+          </>
+        ))}
+      </div>
+      )}
+    </>
   );
 }
-export default Blogs;
+
+export default Drafts;

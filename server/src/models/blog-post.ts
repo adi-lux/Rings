@@ -5,6 +5,7 @@ const BlogPostSchema = new Schema({
   posted: Date,
   title: String,
   content: String,
+  published: Boolean,
   comments: [{ type: Schema.Types.ObjectId, ref: 'BlogComment' }],
 });
 

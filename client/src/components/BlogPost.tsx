@@ -12,22 +12,21 @@ function BlogPost() {
       posted: Date
       content: string
     };
-    const { blogName, userName } = useParams();
+    const { blogId, userName } = useParams();
     const { getAccessTokenSilently } = useAuth0();
     const [blogContent, setBlogContent] = useState<blog>({ title: '', posted: new Date(0), content: '' });
     useEffect(() => {
       getAccessTokenSilently({
         audience: import.meta.env.VITE_AUDIENCE,
       }).then((token) => axios.get(
-        `${import.meta.env.VITE_AUDIENCE}/users/${userName}/blogs/${blogName}`,
+        `${import.meta.env.VITE_AUDIENCE}/users/${userName}/blogs/${blogId}`,
         { headers: { Authorization: `Bearer ${token}` } },
       ))
         .then((response) => {
           const blog = response.data;
           setBlogContent({ ...blog, content: stateToHTML(convertFromRaw(JSON.parse(blog.content))) });
-          console.log(blogContent);
         });
-    }, []);
+    });
     const blogHTML = (blogHTML: string) => ({ __html: blogHTML });
     return (
       <>

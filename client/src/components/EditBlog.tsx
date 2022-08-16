@@ -1,29 +1,45 @@
-import { convertToRaw, EditorState } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
+import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
+import {  Editor } from 'react-draft-wysiwyg';
 import { useForm, Controller } from 'react-hook-form';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { DevTool } from '@hookform/devtools';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Navigate } from 'react-router-dom';
-import { useState } from 'react';
+import { Navigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 type BlogForm = {
   title: string,
   content: EditorState
 };
 
-function CreateBlog({ username }: { username: string }) {
+function EditBlog() {
   const { getAccessTokenSilently } = useAuth0();
+  const { blogId, userName } = useParams();
   const [posted, setPosted] = useState(false);
   const [published, setPublished] = useState(false);
   // TODO: Implement Title
-  const { register, control, handleSubmit } = useForm<BlogForm>({
+  const {
+    register, control, handleSubmit, setValue,
+  } = useForm<BlogForm>({
     defaultValues: {
       title: '',
       content: EditorState.createEmpty(),
     },
   });
+
+  useEffect(() => {
+    getAccessTokenSilently({
+      audience: import.meta.env.VITE_AUDIENCE,
+    }).then((token) => axios.get(
+      `${import.meta.env.VITE_AUDIENCE}/users/${userName}/blogs/${blogId}`,
+      { headers: { Authorization: `Bearer ${token}` } },
+    )).then((response) => {
+      const { title, content } = response.data;
+      setValue('content', EditorState.createWithContent(convertFromRaw(JSON.parse(content))));
+      setValue('title', title);
+    });
+  }, []);
 
   const onFormSubmit = (fields: BlogForm) => {
     // make post command to
@@ -31,12 +47,11 @@ function CreateBlog({ username }: { username: string }) {
     // make axios post request to
     getAccessTokenSilently({
       audience: import.meta.env.VITE_AUDIENCE,
-    }).then((token) => axios.post(
-      `${import.meta.env.VITE_AUDIENCE}/users/${username}/blogs`,
+    }).then((token) => axios.put(
+      `${import.meta.env.VITE_AUDIENCE}/users/${userName}/blogs/${blogId}`,
       { title: fields.title, content, published },
       { headers: { Authorization: `Bearer ${token}` } },
-    ));
-    setPosted(true);
+    )).then(() => setPosted(true));
   };
 
   const publish = (saved: boolean) => () => setPublished(saved);
@@ -65,14 +80,14 @@ function CreateBlog({ username }: { username: string }) {
 
       </form>
       {posted && (
-      <>
-        <Navigate to={`/users/${username}/blogs`} replace />
-        <p>APPLS</p>
-      </>
+        <>
+          <Navigate to={`/users/${userName}/blogs/${blogId}`} replace />
+          <p>APPLS</p>
+        </>
       )}
       <DevTool control={control} />
     </>
   );
 }
 
-export default CreateBlog;
+export default EditBlog;
