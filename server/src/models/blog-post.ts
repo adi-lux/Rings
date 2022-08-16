@@ -1,7 +1,10 @@
 import { Schema, model } from 'mongoose';
 
 const BlogPostSchema = new Schema({
+  id: String,
   posted: Date,
+  title: String,
+  content: String,
   comments: [{ type: Schema.Types.ObjectId, ref: 'BlogComment' }],
 });
 

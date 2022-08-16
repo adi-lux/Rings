@@ -1,0 +1,38 @@
+import { RequestHandler } from 'express';
+import User from '../models/user';
+import BlogPost from '../models/blog-post';
+
+const getBlogs: RequestHandler = async (req, res, next) => {
+  // Fetch all blogs for a given user
+  console.log(req.params.username);
+  const userBlogs = await User.findById(req.params.username).populate('blogPage');
+  console.log(userBlogs?.blogPage);
+  res.json(userBlogs?.blogPage);
+};
+const getBlog: RequestHandler = async (req, res, next) => {
+  const blog = await BlogPost.findOne({ id: (req.params.username + req.params.blog) }).exec();
+  res.json(blog);
+};
+const postBlog: RequestHandler = async (req, res, next) => {
+  // TODO: SANITIZE BLOG
+
+  const userBlogPost = await new BlogPost({
+    id: req.params.username + req.body.title,
+    title: req.body.title,
+    content: req.body.content,
+    posted: new Date(),
+  }).save();
+  await User.findByIdAndUpdate(req.params.username, { $push: { blogPage: userBlogPost } }).exec();
+};
+const editBlog: RequestHandler = async (req, res, next) => {
+  // TODO: SANITIZE
+  const updated = await BlogPost.findByIdAndUpdate(req.params.blog, { content: req.body.content });
+};
+const deleteBlog: RequestHandler = async (req, res, next) => {
+  const deleted = await BlogPost.findByIdAndDelete(req.params.blog);
+  User.findByIdAndUpdate(req.params.username, { $pull: { ...deleted } });
+};
+
+export default {
+  getBlogs, getBlog, postBlog, editBlog, deleteBlog,
+};

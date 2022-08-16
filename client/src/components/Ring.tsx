@@ -1,4 +1,6 @@
-//TODO: API fetch call to /rings/:ringId and grab specific ring and display it
+// TODO: API fetch call to /rings/:ringId and grab specific ring and display it
 
-const Ring = () => <div>Ring</div>
-export default Ring
+function Ring() {
+  return <div>Ring</div>;
+}
+export default Ring;

@@ -1,20 +1,20 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import {auth} from 'express-oauth2-jwt-bearer';
+import { auth } from 'express-oauth2-jwt-bearer';
 import cors from 'cors';
 import dbConnect from './setup/db';
 import homeRouter from './routes/homepage';
 import userRouter from './routes/user';
-dotenv.config();
 
+dotenv.config();
 
 const port = process.env.PORT || 8080;
 const mongo = process.env.MONGO_URI;
 
 dbConnect(mongo);
 const app = express();
-app.use(auth());
 app.use(cors());
+app.use(auth());
 app.use(express.json());
 
 // const config = {
@@ -26,15 +26,14 @@ app.use(express.json());
 //   issuerBaseURL: process.env.ISSUER_BASE_URL,
 // };
 
-
 // auth router attaches /login, /logout, and /callback routes to the baseURL
-//app.use(auth(config));
+// app.use(auth(config));
 // req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out')
 // req.isAuthenticated is provided from the auth router
 // app.set('trust proxy', true);
-
-app.use('/', homeRouter)
 app.use('/users', userRouter);
+
+app.use('/', homeRouter);
 // define a route handler for the default home page
 
 // start the Express server
