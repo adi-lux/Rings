@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 
 const BlogCommentSchema = new Schema({
-  commenter: { type: Schema.Types.ObjectId, ref: 'User' },
+  commenter: String,
   timestamp: Date,
   content: String,
 });

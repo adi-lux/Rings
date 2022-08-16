@@ -3,11 +3,17 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 
-export function Drafts(props) {
-  const { user } : string = props;
+interface blog {
+  _id: string
+  title: string
+  posted: Date
+  content: string
+}
+
+export function Drafts({user}: {user: string}) {
   const { userName } = useParams();
   const { getAccessTokenSilently } = useAuth0();
-  const [blogPosts, setBlogPosts] = useState<string[]>([]);
+  const [blogPosts, setBlogPosts] = useState<blog[]>([]);
   useEffect(() => {
     getAccessTokenSilently({
       audience: import.meta.env.VITE_AUDIENCE,

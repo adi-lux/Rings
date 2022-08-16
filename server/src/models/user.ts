@@ -6,7 +6,7 @@ const UserSchema = new Schema({
   firstName: String,
   lastName: String,
   creation: Date,
-  profilePage: String,
+  profilePage: {type: Schema.Types.ObjectId, ref: 'Profile'},
   blogPage: [{ type: Schema.Types.ObjectId, ref: 'BlogPost' }],
   chatPage: [{ type: Schema.Types.ObjectId, ref: 'ChatMessage' }],
   friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],

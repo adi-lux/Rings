@@ -3,10 +3,17 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 
+type blog = {
+  _id: string
+  title: string
+  posted: Date
+  content: string
+};
+
 export function Blogs() {
   const { userName } = useParams();
   const { getAccessTokenSilently } = useAuth0();
-  const [blogPosts, setBlogPosts] = useState<string[]>([]);
+  const [blogPosts, setBlogPosts] = useState<blog[]>([]);
 
   useEffect(() => {
     getAccessTokenSilently({
@@ -24,12 +31,12 @@ export function Blogs() {
   return (
     <div>
       {blogPosts.map((blogPost) => (
-        <>
+        <div key={blogPost._id}>
           <b>Title:</b>
           {' '}
           <Link to={`${encodeURIComponent(blogPost._id)}`}>{blogPost.title}</Link>
           <br />
-        </>
+        </div>
       ))}
     </div>
   );

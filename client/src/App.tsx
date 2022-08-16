@@ -15,6 +15,8 @@ import NotFound from './components/NotFound';
 import CreateBlog from './components/CreateBlog';
 import EditBlog from './components/EditBlog';
 import Drafts from './components/Drafts';
+import CreateProfile from './components/CreateProfile';
+import EditProfile from './components/EditProfile';
 
 function App() {
   // Every user will have one profile, and can be involved in multiple rings.
@@ -44,7 +46,7 @@ function App() {
 
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<Layout user={username} />}>
           <Route index element={<HomePage />} />
           {isAuthenticated ? (
             <>
@@ -55,11 +57,13 @@ function App() {
               <Route path="users">
                 <Route index element={<Users />} />
                 <Route path=":userName">
-                  <Route index element={<UserProfile />} />
+                  <Route index element={<UserProfile user={username} />} />
+                  <Route path="create" element={<CreateProfile username={username}/>}/>
+                  <Route path="edit" element={<EditProfile username={username}/>}/>
                   <Route path="blogs">
                     <Route index element={<Blogs />} />
                     <Route path=":blogId">
-                        <Route index element={<BlogPost />} />
+                        <Route index element={<BlogPost user={username} />} />
                         <Route path="edit" element={<EditBlog />} />
                       </Route>
                   </Route>

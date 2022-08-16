@@ -15,9 +15,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       screen_hint="signup"
       scope="read"
     >
-      {' '}
       <App />
-      {' '}
 
     </Auth0Provider>
   </React.StrictMode>,

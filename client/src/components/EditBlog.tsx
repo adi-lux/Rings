@@ -82,7 +82,6 @@ function EditBlog() {
       {posted && (
         <>
           <Navigate to={`/users/${userName}/blogs/${blogId}`} replace />
-          <p>APPLS</p>
         </>
       )}
       <DevTool control={control} />
