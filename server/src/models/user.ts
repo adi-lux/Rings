@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { model, Schema } from "mongoose";
 
 const UserSchema = new Schema({
   _id: String,
@@ -6,12 +6,12 @@ const UserSchema = new Schema({
   firstName: String,
   lastName: String,
   creation: Date,
-  profilePage: {type: Schema.Types.ObjectId, ref: 'Profile'},
-  blogPage: [{ type: Schema.Types.ObjectId, ref: 'BlogPost' }],
-  chatPage: [{ type: Schema.Types.ObjectId, ref: 'ChatMessage' }],
-  friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  profilePage: { type: Schema.Types.ObjectId, ref: "Profile" },
+  blogPage: [{ type: Schema.Types.ObjectId, ref: "BlogPost" }],
+  chatPage: [{ type: Schema.Types.ObjectId, ref: "ChatMessage" }],
+  rings: [{ type: Schema.Types.ObjectId, ref: "Ring" }],
 });
 
-const User = model('User', UserSchema);
+const User = model("User", UserSchema);
 
 export default User;

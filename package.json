@@ -18,6 +18,7 @@
   },
   "packageManager": "yarn@3.2.2",
   "devDependencies": {
-    "@types/auth0": "^2.35.3"
+    "@types/auth0": "^2.35.3",
+    "prettier": "^2.7.1"
   }
 }

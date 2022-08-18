@@ -1,11 +1,11 @@
-import { Schema, model } from 'mongoose';
+import { model, Schema } from "mongoose";
 
 const ChatMessageSchema = new Schema({
-  roomOwner: { type: Schema.Types.ObjectId, ref: 'User' },
-  commenter: { type: Schema.Types.ObjectId, ref: 'User' },
+  roomOwner: String,
+  commenter: String,
   timestamp: Date,
   content: String,
 });
 
-const ChatMessage = model('ChatMessage', ChatMessageSchema);
+const ChatMessage = model("ChatMessage", ChatMessageSchema);
 export default ChatMessage;

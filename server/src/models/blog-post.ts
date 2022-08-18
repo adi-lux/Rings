@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { model, Schema } from "mongoose";
 
 const BlogPostSchema = new Schema({
   id: String,
@@ -6,8 +6,8 @@ const BlogPostSchema = new Schema({
   title: String,
   content: String,
   published: Boolean,
-  comments: [{ type: Schema.Types.ObjectId, ref: 'BlogComment' }],
+  comments: [{ type: Schema.Types.ObjectId, ref: "BlogComment" }],
 });
 
-const BlogPost = model('BlogPost', BlogPostSchema);
+const BlogPost = model("BlogPost", BlogPostSchema);
 export default BlogPost;

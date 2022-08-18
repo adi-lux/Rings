@@ -1,8 +1,8 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet } from "react-router-dom";
 
-import Header from './Header';
+import Header from "./Header";
 
-function Layout({user} : {user: string}) {
+function Layout({ user }: { user: string }) {
   // TODO: Check to see if the user has signed in or not
   return (
     <div className="layout bg-theme-white font-sans h-full w-screen">
@@ -11,4 +11,5 @@ function Layout({user} : {user: string}) {
     </div>
   );
 }
+
 export default Layout;

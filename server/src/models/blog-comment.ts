@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { model, Schema } from "mongoose";
 
 const BlogCommentSchema = new Schema({
   commenter: String,
@@ -6,5 +6,5 @@ const BlogCommentSchema = new Schema({
   content: String,
 });
 
-const BlogComment = model('BlogComment', BlogCommentSchema);
+const BlogComment = model("BlogComment", BlogCommentSchema);
 export default BlogComment;

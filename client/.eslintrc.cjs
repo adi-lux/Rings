@@ -6,7 +6,8 @@ module.exports = {
     "extends": [
         "plugin:react/recommended",
         "airbnb",
-        "airbnb-typescript"
+        "airbnb-typescript",
+        "prettier"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -25,7 +26,12 @@ module.exports = {
     "rules": {
         "react/react-in-jsx-scope": "off",
         "@typescript-eslint/ban-ts-comment": "off",
-
+        'react/jsx-props-no-spreading': 'off',
+        "no-underscore-dangle": [
+            "error",
+            {"allow": ["_id"]}
+        ],
+        "react/no-danger": 'off', // We frequently use innerHtml for rich content
         "react/jsx-filename-extension": [1, {"extensions": [".ts", ".tsx"]}], //should add ".ts" if typescript project
     }
 }

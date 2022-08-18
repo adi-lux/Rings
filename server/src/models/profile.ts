@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { model, Schema } from "mongoose";
 
 const ProfileSchema = new Schema({
   created: Date,
@@ -6,6 +6,5 @@ const ProfileSchema = new Schema({
   content: String,
 });
 
-const Profile = model('Profile', ProfileSchema);
-//TODO: upgrade profile capabilities
+const Profile = model("Profile", ProfileSchema);
 export default Profile;

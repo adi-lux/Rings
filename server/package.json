@@ -32,6 +32,8 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-oauth2-jwt-bearer": "^1.1.0",
+    "http": "^0.0.1-security",
+    "loglevel": "^1.8.0",
     "mongoose": "^6.5.2",
     "socket.io": "^4.5.1"
   },

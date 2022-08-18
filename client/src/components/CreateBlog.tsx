@@ -1,16 +1,15 @@
-import { convertToRaw, EditorState } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import { useForm, Controller } from 'react-hook-form';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { DevTool } from '@hookform/devtools';
-import axios from 'axios';
-import { useAuth0 } from '@auth0/auth0-react';
-import { Navigate } from 'react-router-dom';
-import { useState } from 'react';
+import { convertToRaw, EditorState } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+import { Controller, useForm } from "react-hook-form";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Navigate } from "react-router-dom";
+import { useState } from "react";
 
 type BlogForm = {
-  title: string,
-  content: EditorState
+  title: string;
+  content: EditorState;
 };
 
 function CreateBlog({ username }: { username: string }) {
@@ -20,22 +19,26 @@ function CreateBlog({ username }: { username: string }) {
   // TODO: Implement Title
   const { register, control, handleSubmit } = useForm<BlogForm>({
     defaultValues: {
-      title: '',
+      title: "",
       content: EditorState.createEmpty(),
     },
   });
 
   const onFormSubmit = (fields: BlogForm) => {
     // make post command to
-    const content = JSON.stringify(convertToRaw(fields.content.getCurrentContent()));
+    const content = JSON.stringify(
+      convertToRaw(fields.content.getCurrentContent())
+    );
     // make axios post request to
     getAccessTokenSilently({
       audience: import.meta.env.VITE_AUDIENCE,
-    }).then((token) => axios.post(
-      `${import.meta.env.VITE_AUDIENCE}/users/${username}/blogs`,
-      { title: fields.title, content, published },
-      { headers: { Authorization: `Bearer ${token}` } },
-    ));
+    }).then((token) =>
+      axios.post(
+        `${import.meta.env.VITE_AUDIENCE}/users/${username}/blogs`,
+        { title: fields.title, content, published },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+    );
     setPosted(true);
   };
 
@@ -44,8 +47,9 @@ function CreateBlog({ username }: { username: string }) {
   return (
     <>
       <form onSubmit={handleSubmit(onFormSubmit)}>
-        <label htmlFor="title">Title: </label>
-        <input {...register('title', { required: true })} />
+        <label htmlFor="title">
+          Title: <input {...register("title", { required: true })} />
+        </label>
         <Controller
           name="content"
           control={control}
@@ -60,17 +64,19 @@ function CreateBlog({ username }: { username: string }) {
             />
           )}
         />
-        <button type="submit" className="bg-blue-200" onClick={publish(true)}>Submit</button>
-        <button type="submit" className="bg-blue-200">Save as Draft</button>
-
+        <button type="submit" className="bg-blue-200" onClick={publish(true)}>
+          Submit
+        </button>
+        <button type="submit" className="bg-blue-200">
+          Save as Draft
+        </button>
       </form>
       {posted && (
-      <>
-        <Navigate to={`/users/${username}/blogs`} replace />
-        <p>APPLS</p>
-      </>
+        <>
+          <Navigate to={`/users/${username}/blogs`} replace />
+          <p>APPLS</p>
+        </>
       )}
-      <DevTool control={control} />
     </>
   );
 }

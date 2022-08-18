@@ -1,17 +1,10 @@
-import express from 'express';
+import express from "express";
+import homepageController from "../controllers/homepage";
 
 const router = express.Router();
 
-// oidc
-router.get('/', (req, res) => {
-  res.json(req.auth.payload);
-});
+router.get("/", homepageController.getHomePage);
+router.get("/profile", homepageController.getProfile);
+router.get("*", homepageController.getError);
 
-router.get('/profile', (req, res) => {
-  res.json(req.auth);
-});
-
-router.get('*', (req, res) => {
-  res.json({ data: '404 world!' });
-});
 export default router;

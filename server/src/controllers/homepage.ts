@@ -1,10 +1,26 @@
-import { RequestHandler } from 'express';
+import { RequestHandler } from "express";
 
-const getHomePage: RequestHandler = (req, res, next) => res.json();
-const postHomePage: RequestHandler = (req, res, next) => res.json();
-const updateHomePage: RequestHandler = (req, res, next) => res.json();
-const deleteHomePage: RequestHandler = (req, res, next) => res.json();
-
-export default {
-  getHomePage, postHomePage, updateHomePage, deleteHomePage,
+const getHomePage: RequestHandler = (req, res, next) => {
+  try {
+    return res.json(req.auth.payload);
+  } catch (e) {
+    return next(e);
+  }
 };
+
+const getProfile: RequestHandler = (req, res, next) => {
+  try {
+    return res.json(req.auth);
+  } catch (e) {
+    return next(e);
+  }
+};
+
+const getError: RequestHandler = (req, res, next) => {
+  try {
+    return res.json({ data: "404 world!" });
+  } catch (e) {
+    return next(e);
+  }
+};
+export default { getHomePage, getProfile, getError };
