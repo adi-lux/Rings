@@ -1,8 +1,8 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
+import log from "loglevel";
 import ChatMessage from "../models/chat-message.model";
 import User from "../models/user.model";
-import log from "loglevel";
 
 const initializeChat = (port: string | 8081) => {
   const httpServer = createServer();
@@ -44,4 +44,4 @@ const initializeChat = (port: string | 8081) => {
   });
 };
 
-export { initializeChat };
+export default initializeChat;

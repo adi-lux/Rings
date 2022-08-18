@@ -1,17 +1,10 @@
 import { RequestHandler } from "express";
-import Ring from "../models/ring.model";
-import User from "../models/user.model";
+import RingService from "../services/ring.service";
 
 const postRing: RequestHandler = async (req, res, next) => {
   try {
-    const newRing = await new Ring({
-      name: req.body.name,
-      private: req.body.privacy,
-      members: [req.body.username],
-    }).save();
-    await User.findByIdAndUpdate(req.body.username, {
-      $push: { rings: newRing },
-    }).exec();
+    const ring = req.body;
+    const newRing = await RingService.postRing(ring);
     return res.json({ newRing });
   } catch (e) {
     return next(e);
@@ -20,7 +13,7 @@ const postRing: RequestHandler = async (req, res, next) => {
 
 const getRings: RequestHandler = async (req, res, next) => {
   try {
-    const rings = await Ring.find().exec();
+    const rings = RingService.getRings();
     return res.json({ rings });
   } catch (e) {
     return next(e);
@@ -29,7 +22,8 @@ const getRings: RequestHandler = async (req, res, next) => {
 
 const getRing: RequestHandler = async (req, res, next) => {
   try {
-    const ring = await Ring.findOne({ name: req.params.ringName }).exec();
+    const name = req.params.ringName;
+    const ring = await RingService.getRing(name);
     return res.json({ ring });
   } catch (e) {
     return next(e);
@@ -38,13 +32,9 @@ const getRing: RequestHandler = async (req, res, next) => {
 
 const joinRing: RequestHandler = async (req, res, next) => {
   try {
-    const newRing = await Ring.findOneAndUpdate(
-      { name: req.params.ringName },
-      { $push: { members: req.body.username } }
-    );
-    await User.findByIdAndUpdate(req.body.username, {
-      $push: { rings: newRing },
-    }).exec();
+    const name = req.params.ringname;
+    const {username} = req.body;
+    const newRing = await RingService.joinRing(name, username);
     return res.json({ newRing });
   } catch (e) {
     return next(e);
@@ -54,15 +44,8 @@ const joinRing: RequestHandler = async (req, res, next) => {
 
 const deleteRing: RequestHandler = async (req, res, next) => {
   try {
-    const deletedRing = await Ring.findOneAndDelete({
-      name: req.params.ringName,
-    });
-    const userList = await User.find({
-      rings: { $elemMatch: { name: deletedRing.name } },
-    }).exec();
-    userList.forEach((user) => {
-      User.findByIdAndUpdate(user._id, { $pull: { rings: deletedRing } });
-    });
+    const name = req.params.ringName;
+    const userList = await RingService.deleteRing(name);
     return res.json({ userList });
   } catch (e) {
     return next(e);

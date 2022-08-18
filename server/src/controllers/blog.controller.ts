@@ -1,11 +1,10 @@
 import { RequestHandler } from "express";
-import BlogService from "../services/blog.service";
-import blogService from "../services/blog.service";
 import log from "loglevel";
+import BlogService from "../services/blog.service";
 
 const getBlogs: RequestHandler = async (req, res, next) => {
   try {
-    const username = req.params.username;
+    const { username } = req.params;
     const blogList = await BlogService.getBlogs(username);
     log.info(`BlogList: ${blogList}`);
     return res.json(blogList);
@@ -27,7 +26,7 @@ const postBlog: RequestHandler = async (req, res, next) => {
   // TODO: SANITIZE BLOG
   try {
     const blog = req.body;
-    const username = req.params.username;
+    const { username } = req.params;
     const updated = await BlogService.postBlog(blog, username);
     return res.json({ updated });
   } catch (e) {
@@ -59,8 +58,8 @@ const deleteBlog: RequestHandler = async (req, res, next) => {
 const postComment: RequestHandler = async (req, res, next) => {
   try {
     const comment = req.body;
-    const blog = req.params.blog;
-    const userComment = await blogService.postComment(comment, blog);
+    const { blog } = req.params;
+    const userComment = await BlogService.postComment(comment, blog);
     return res.json({ userComment });
   } catch (e) {
     return next(e);

@@ -7,7 +7,7 @@ import dbConnect from "./setup/db";
 import homeRouter from "./routes/homepage.route";
 import userRouter from "./routes/user.route";
 import ringsRouter from "./routes/ring.route";
-import { initializeChat } from "./setup/socket";
+import initializeChat from "./setup/socket";
 
 dotenv.config();
 

@@ -1,7 +1,7 @@
+import log from "loglevel";
 import User from "../models/user.model";
 import BlogPost from "../models/blog-post.model";
 import BlogComment from "../models/blog-comment.model";
-import log from "loglevel";
 
 interface Blog {
   title: string;
@@ -21,7 +21,8 @@ const getBlogs = async (username: string) => {
     const userBlogs = await User.findById(username).populate("blogPage");
     return userBlogs?.blogPage;
   } catch (e) {
-    log.error(`Error while getting user blog-list:\n${e}`);
+    log.trace(`Error while getting user blog-list:\n${e}`);
+    throw Error(e);
   }
 };
 
@@ -29,7 +30,8 @@ const getBlog = async (blog: string) => {
   try {
     return await BlogPost.findById(blog).populate("comments").exec();
   } catch (e) {
-    log.error(`Error while getting blog:\n${e}`);
+    log.trace(`Error while getting blog:\n${e}`);
+    throw Error(e);
   }
 };
 
@@ -45,7 +47,8 @@ const postBlog = async (blog: Blog, username: string) => {
       $push: { blogPage: userBlogPost },
     }).exec();
   } catch (e) {
-    log.error(`Error while posting blog:\n${e}`);
+    log.trace(`Error while posting blog:\n${e}`);
+    throw Error(e);
   }
   // TODO: SANITIZE BLOG
 };
@@ -59,7 +62,8 @@ const editBlog = async (id: string, blog: Blog) => {
       published: blog.published,
     }).exec();
   } catch (e) {
-    log.error(`Error while editing blog:\n${e}`);
+    log.trace(`Error while editing blog:\n${e}`);
+    throw Error(e);
   }
 };
 
@@ -69,7 +73,8 @@ const deleteBlog = async (blog: string, username: string) => {
     User.findByIdAndUpdate(username, { $pull: { ...deleted } });
     return deleted;
   } catch (e) {
-    log.error(`Error while deleting blog:\n${e}`);
+    log.trace(`Error while deleting blog:\n${e}`);
+    throw Error(e);
   }
 };
 
@@ -85,7 +90,8 @@ const postComment = async (comment: Comment, blog: string) => {
     }).exec();
     return userComment;
   } catch (e) {
-    log.error(`Error while posting comment:\n${e}`);
+    log.trace(`Error while posting comment:\n${e}`);
+    throw Error(e);
   }
 };
 
