@@ -23,4 +23,5 @@ const getError: RequestHandler = (req, res, next) => {
     return next(e);
   }
 };
+
 export default { getHomePage, getProfile, getError };

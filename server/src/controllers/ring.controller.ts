@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
-import Ring from "../models/ring";
-import User from "../models/user";
+import Ring from "../models/ring.model";
+import User from "../models/user.model";
 
 const postRing: RequestHandler = async (req, res, next) => {
   try {
