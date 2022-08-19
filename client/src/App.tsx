@@ -1,7 +1,6 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {useAuth0} from '@auth0/auth0-react';
 import {useEffect, useState} from 'react';
-import axios from 'axios'; // Imports
 import log from 'loglevel';
 import HomePage from './components/HomePage';
 import Rings from './components/Rings';
@@ -19,6 +18,7 @@ import Drafts from './components/Drafts';
 import CreateProfile from './components/CreateProfile';
 import EditProfile from './components/EditProfile';
 import CreateRing from './components/CreateRing';
+import useApi from './hooks/useApi';
 
 // TODO: Refactor functionality and remove redundancy
 // TODO: Create proper UI layout
@@ -26,25 +26,21 @@ import CreateRing from './components/CreateRing';
 function App() {
   // Every user will have one profile, and can be involved in multiple rings.
   // A user can choose the allowed rings for a blog post
-  const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated, isLoading } = useAuth0();
+  const req = useApi();
   const [username, setUsername] = useState("");
+
   useEffect(() => {
-    (() => {
-      getAccessTokenSilently({
-        audience: import.meta.env.VITE_AUDIENCE,
-        scope: "read",
-      })
-        .then((token) =>
-          axios.get("http://localhost:3000/", {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          })
-        )
-        .then((response) => setUsername(response.data.username))
-        .catch((e) => log.error(e));
+    const abortController: AbortController = new AbortController();
+    (async () => {
+      try {
+        const { data } = await req.get("/");
+        setUsername(data.username);
+      } catch (e) {
+        log.error(e);
+      }
     })();
+    return () => abortController?.abort();
   }, []);
 
   return (

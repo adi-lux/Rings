@@ -1,7 +1,7 @@
-import {Link} from 'react-router-dom';
-import {useEffect, useState} from 'react';
-import axios from 'axios';
-import {useAuth0} from '@auth0/auth0-react';
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
 
 // TODO: Restrict users to only  being able to see people in their rings
 function Users() {
