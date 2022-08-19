@@ -18,7 +18,7 @@ const getProfile: RequestHandler = (req, res, next) => {
 
 const getError: RequestHandler = (req, res, next) => {
   try {
-    return res.json({ data: "404 world!" });
+    return res.status(404).json({ data: "404 world!" });
   } catch (e) {
     return next(e);
   }

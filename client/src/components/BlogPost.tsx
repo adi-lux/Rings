@@ -1,31 +1,32 @@
 // TODO: Retrieve blog post from user and
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { stateToHTML } from "draft-js-export-html";
 import { convertFromRaw } from "draft-js";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useForm } from "react-hook-form";
+import log from "loglevel";
+import useApi from "../hooks/useApi";
+
+type Comment = {
+  content: string;
+  _id: string;
+  commenter: string;
+  timestamp: string;
+};
+type Blog = {
+  title: string;
+  posted: Date;
+  content: string;
+  comments: Comment[];
+};
+
+type CommentForm = {
+  content: string;
+};
 
 function BlogPost({ user }: { user: string }) {
-  type Comment = {
-    content: string;
-    _id: string;
-    commenter: string;
-    timestamp: string;
-  };
-  type Blog = {
-    title: string;
-    posted: Date;
-    content: string;
-    comments: Comment[];
-  };
-
-  type CommentForm = {
-    content: string;
-  };
   const { blogId, userName } = useParams();
-  const { getAccessTokenSilently } = useAuth0();
+  const { request } = useApi();
   const { register, handleSubmit } = useForm<CommentForm>({
     defaultValues: {
       content: "",
@@ -38,39 +39,36 @@ function BlogPost({ user }: { user: string }) {
     content: "",
     comments: [],
   });
+
   useEffect(() => {
-    getAccessTokenSilently({
-      audience: import.meta.env.VITE_AUDIENCE,
-    })
-      .then((token) =>
-        axios.get(
-          `${import.meta.env.VITE_AUDIENCE}/users/${userName}/blogs/${blogId}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
-      )
-      .then((response) => {
-        const blog = response.data;
+    const abortController: AbortController = new AbortController();
+    (async () => {
+      try {
+        const req = await request();
+        const { data } = await req.get(`/users/${userName}/blogs/${blogId}`);
         setBlogContent({
-          ...blog,
-          content: stateToHTML(convertFromRaw(JSON.parse(blog.content))),
+          ...data,
+          content: stateToHTML(convertFromRaw(JSON.parse(data.content))),
         });
-      });
+      } catch (e) {
+        log.error(e);
+      }
+    })();
+
+    return () => abortController?.abort();
   }, [commented]);
 
-  const onFormSubmit = (fields: { content: string }) => {
-    // make post command to
-    // make axios post request to
-    getAccessTokenSilently({
-      audience: import.meta.env.VITE_AUDIENCE,
-    })
-      .then((token) =>
-        axios.post(
-          `${import.meta.env.VITE_AUDIENCE}/users/${userName}/blogs/${blogId}`,
-          { content: fields.content, username: user },
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
-      )
-      .then(() => setCommented(!commented));
+  const onFormSubmit = async (fields: { content: string }) => {
+    try {
+      const req = await request();
+      await req.post(`/users/${userName}/blogs/${blogId}`, {
+        content: fields.content,
+        username: user,
+      });
+      setCommented(!commented);
+    } catch (e) {
+      log.error(e);
+    }
   };
 
   const blogHTML = (html: string) => ({ __html: html });

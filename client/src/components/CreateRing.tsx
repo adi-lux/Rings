@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
-import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
 import { Navigate } from "react-router-dom";
 import { useState } from "react";
+import log from "loglevel";
+import useApi from "../hooks/useApi";
 
 type RingForm = {
   name: string;
@@ -10,7 +10,7 @@ type RingForm = {
 };
 
 function CreateRing({ username }: { username: string }) {
-  const { getAccessTokenSilently } = useAuth0();
+  const { request } = useApi();
   const [posted, setPosted] = useState(false);
   const [finalRingName, setFinalRingName] = useState("My Ring");
   // TODO: Implement Title
@@ -21,21 +21,19 @@ function CreateRing({ username }: { username: string }) {
     },
   });
 
-  const onFormSubmit = (fields: RingForm) => {
+  const onFormSubmit = async (fields: RingForm) => {
     // make post command to
     const { name, privacy } = fields;
     // make axios post request to
-    getAccessTokenSilently({
-      audience: import.meta.env.VITE_AUDIENCE,
-    }).then((token) =>
-      axios.post(
-        `${import.meta.env.VITE_AUDIENCE}/rings/`,
-        { name, privacy, username },
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
-    );
-    setFinalRingName(name);
-    setPosted(true);
+    try {
+      const req = await request();
+
+      await req.post("/rings/", { name, privacy, username });
+      setFinalRingName(name);
+      setPosted(true);
+    } catch (e) {
+      log.error(e);
+    }
   };
 
   return (

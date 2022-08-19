@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { MouseEventHandler, useEffect, useState } from "react";
 import io from "socket.io-client";
-import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
+import log from "loglevel";
+import useApi from "../hooks/useApi";
 
 interface ChatMessage {
   roomOwner: String;
@@ -18,24 +18,25 @@ function Chat({ user }: { user: string }) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState<ChatMessage[]>([]);
   const { userName } = useParams();
-  const { getAccessTokenSilently } = useAuth0();
+  const { request } = useApi();
 
   const messageHandler: MouseEventHandler<HTMLButtonElement> = () => {
     socket.emit("message", userName, user, currentMessage);
   };
   useEffect(() => {
-    getAccessTokenSilently({
-      audience: import.meta.env.VITE_AUDIENCE,
-    })
-      .then((token) =>
-        axios.get(`${import.meta.env.VITE_AUDIENCE}/users/${userName}/chat`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      )
-      .then((response) => {
-        const chatList = response.data;
-        setMessageList(chatList.chatPage);
-      });
+    const abortController: AbortController = new AbortController();
+
+    (async () => {
+      try {
+        const req = await request();
+        const { data } = await req.get(`/users/${userName}/chat`);
+        setMessageList(data.chatPage);
+      } catch (e) {
+        log.error(e);
+      }
+    })();
+
+    return () => abortController?.abort();
   }, []);
   useEffect(() => {
     socket.on("connect", () => {

@@ -1,10 +1,9 @@
 // TODO: API fetch call to /rings and grab list of valid rings
 
-import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import log from "loglevel";
+import useApi from "../hooks/useApi";
 
 interface Ring {
   name: string;
@@ -13,22 +12,23 @@ interface Ring {
 }
 
 function Rings() {
-  const { getAccessTokenSilently } = useAuth0();
+  const { request } = useApi();
   const [ringList, setRingList] = useState<Ring[]>([]);
+
   useEffect(() => {
-    getAccessTokenSilently({
-      audience: import.meta.env.VITE_AUDIENCE,
-    })
-      .then((token) =>
-        axios.get(`${import.meta.env.VITE_AUDIENCE}/rings/`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      )
-      .then((response) => {
-        const { rings } = response.data;
-        log.info("get rings", rings);
+    const abortController: AbortController = new AbortController();
+    (async () => {
+      try {
+        const req = await request();
+        const { data } = await req.get("/rings/");
+        const { rings } = data;
+        log.info("get rings", { data });
         setRingList(rings);
-      });
+      } catch (e) {
+        log.error(e);
+      }
+    })();
+    return () => abortController?.abort();
   }, []);
 
   return (

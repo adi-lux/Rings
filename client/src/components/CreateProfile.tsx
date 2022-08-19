@@ -2,17 +2,16 @@ import { convertToRaw, EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { Controller, useForm } from "react-hook-form";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
 import { Navigate } from "react-router-dom";
 import { useState } from "react";
+import useApi from "../hooks/useApi";
 
 type ProfileForm = {
   content: EditorState;
 };
 
 function CreateProfile({ username }: { username: string }) {
-  const { getAccessTokenSilently } = useAuth0();
+  const { request } = useApi();
   const [posted, setPosted] = useState(false);
   // TODO: Implement Title
   const { control, handleSubmit } = useForm<ProfileForm>({
@@ -21,21 +20,14 @@ function CreateProfile({ username }: { username: string }) {
     },
   });
 
-  const onFormSubmit = (fields: ProfileForm) => {
+  const onFormSubmit = async (fields: ProfileForm) => {
     // make post command to
     const content = JSON.stringify(
       convertToRaw(fields.content.getCurrentContent())
     );
-    // make axios post request to
-    getAccessTokenSilently({
-      audience: import.meta.env.VITE_AUDIENCE,
-    }).then((token) =>
-      axios.post(
-        `${import.meta.env.VITE_AUDIENCE}/users/${username}/`,
-        { content },
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
-    );
+    const req = await request();
+
+    await req.post(`/users/${username}`, { content });
     setPosted(true);
   };
 

@@ -2,17 +2,17 @@ import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { Controller, useForm } from "react-hook-form";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
 import { Navigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import log from "loglevel";
+import useApi from "../hooks/useApi";
 
 type ProfileForm = {
   content: EditorState;
 };
 
 function EditProfile({ username }: { username: string }) {
-  const { getAccessTokenSilently } = useAuth0();
+  const { request } = useApi();
   const { userName } = useParams();
   const [posted, setPosted] = useState(false);
   // TODO: Implement Title
@@ -23,42 +23,40 @@ function EditProfile({ username }: { username: string }) {
   });
 
   useEffect(() => {
-    getAccessTokenSilently({
-      audience: import.meta.env.VITE_AUDIENCE,
-    })
-      .then((token) =>
-        axios.get(`${import.meta.env.VITE_AUDIENCE}/users/${userName}/`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      )
-      .then((response) => {
-        const { profilePage } = response.data;
+    const abortController: AbortController = new AbortController();
+
+    (async () => {
+      try {
+        const req = await request();
+
+        const { data } = await req.get(`/users/${userName}/`);
+        const { profilePage } = data;
         setValue(
           "content",
           EditorState.createWithContent(
             convertFromRaw(JSON.parse(profilePage.content))
           )
         );
-      });
+      } catch (e) {
+        log.error(e);
+      }
+    })();
+    abortController?.abort();
   }, []);
 
-  const onFormSubmit = (fields: ProfileForm) => {
+  const onFormSubmit = async (fields: ProfileForm) => {
     // make post command to
-    const content = JSON.stringify(
-      convertToRaw(fields.content.getCurrentContent())
-    );
-    // make axios post request to
-    getAccessTokenSilently({
-      audience: import.meta.env.VITE_AUDIENCE,
-    })
-      .then((token) =>
-        axios.put(
-          `${import.meta.env.VITE_AUDIENCE}/users/${userName}/`,
-          { content },
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
-      )
-      .then(() => setPosted(true));
+    try {
+      const content = JSON.stringify(
+        convertToRaw(fields.content.getCurrentContent())
+      );
+      const req = await request();
+
+      await req.put(`/users/${userName}/`, { content });
+      setPosted(true);
+    } catch (e) {
+      log.error(e);
+    }
   };
 
   return (

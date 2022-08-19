@@ -2,10 +2,10 @@ import { convertToRaw, EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { Controller, useForm } from "react-hook-form";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
 import { Navigate } from "react-router-dom";
 import { useState } from "react";
+import log from "loglevel";
+import useApi from "../hooks/useApi";
 
 type BlogForm = {
   title: string;
@@ -13,9 +13,9 @@ type BlogForm = {
 };
 
 function CreateBlog({ username }: { username: string }) {
-  const { getAccessTokenSilently } = useAuth0();
   const [posted, setPosted] = useState(false);
   const [published, setPublished] = useState(false);
+  const { request } = useApi();
   // TODO: Implement Title
   const { register, control, handleSubmit } = useForm<BlogForm>({
     defaultValues: {
@@ -24,22 +24,23 @@ function CreateBlog({ username }: { username: string }) {
     },
   });
 
-  const onFormSubmit = (fields: BlogForm) => {
+  const onFormSubmit = async (fields: BlogForm) => {
     // make post command to
-    const content = JSON.stringify(
-      convertToRaw(fields.content.getCurrentContent())
-    );
-    // make axios post request to
-    getAccessTokenSilently({
-      audience: import.meta.env.VITE_AUDIENCE,
-    }).then((token) =>
-      axios.post(
-        `${import.meta.env.VITE_AUDIENCE}/users/${username}/blogs`,
-        { title: fields.title, content, published },
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
-    );
-    setPosted(true);
+    try {
+      const content = JSON.stringify(
+        convertToRaw(fields.content.getCurrentContent())
+      );
+      const req = await request();
+
+      await req.post(`/users/${username}/blogs`, {
+        title: fields.title,
+        content,
+        published,
+      });
+      setPosted(true);
+    } catch (e) {
+      log.error(e);
+    }
   };
 
   const publish = (saved: boolean) => () => setPublished(saved);
@@ -71,12 +72,7 @@ function CreateBlog({ username }: { username: string }) {
           Save as Draft
         </button>
       </form>
-      {posted && (
-        <>
-          <Navigate to={`/users/${username}/blogs`} replace />
-          <p>APPLS</p>
-        </>
-      )}
+      {posted && <Navigate to={`/users/${username}/blogs`} replace />}
     </>
   );
 }

@@ -1,12 +1,10 @@
 import { RequestHandler } from "express";
-import log from "loglevel";
 import BlogService from "../services/blog.service";
 
 const getBlogs: RequestHandler = async (req, res, next) => {
   try {
     const { username } = req.params;
     const blogList = await BlogService.getBlogs(username);
-    log.info(`BlogList: ${blogList}`);
     return res.json(blogList);
   } catch (e) {
     return next(e);

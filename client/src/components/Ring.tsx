@@ -1,45 +1,42 @@
 // TODO: API fetch call to /rings/:ringId and grab specific ring and display it
 
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
 import { Link, useParams } from "react-router-dom";
 import log from "loglevel";
+import useApi from "../hooks/useApi";
 
 function Ring({ user }: { user: string }) {
-  const { getAccessTokenSilently } = useAuth0();
+  const { request } = useApi();
   const { ringName } = useParams();
   const [userList, setUserList] = useState<string[]>([]);
   useEffect(() => {
-    getAccessTokenSilently({
-      audience: import.meta.env.VITE_AUDIENCE,
-    })
-      .then((token) =>
-        axios.get(`${import.meta.env.VITE_AUDIENCE}/rings/${ringName}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      )
-      .then((response) => {
-        const { ring } = response.data;
+    const abortController: AbortController = new AbortController();
+    (async () => {
+      try {
+        const req = await request();
+
+        const { data } = await req.get(`/rings/${ringName}`);
+        const { ring } = data;
         setUserList(ring.members);
-      });
+      } catch (e) {
+        log.error(e);
+      }
+    })();
+    return () => abortController?.abort();
   }, []);
-  const joinRing = () => {
-    getAccessTokenSilently({
-      audience: import.meta.env.VITE_AUDIENCE,
-    })
-      .then((token) =>
-        axios.put(
-          `${import.meta.env.VITE_AUDIENCE}/rings/${ringName}`,
-          { username: user },
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
-      )
-      .then((response) => {
-        const { newRing } = response.data;
-        log.info(newRing);
-        setUserList(newRing.members);
+
+  const joinRing = async () => {
+    try {
+      const req = await request();
+
+      const { data } = await req.put(`/rings/${ringName}`, {
+        username: user,
       });
+      const { newRing } = data;
+      setUserList(newRing.members);
+    } catch (e) {
+      log.error(e);
+    }
   };
   return (
     <>

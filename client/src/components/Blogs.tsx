@@ -1,7 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
+import useApi from "../hooks/useApi";
 
 type Blog = {
   _id: string;
@@ -12,24 +11,19 @@ type Blog = {
 
 function Blogs() {
   const { userName } = useParams();
-  const { getAccessTokenSilently } = useAuth0();
+  const { request } = useApi();
   const [blogPosts, setBlogPosts] = useState<Blog[]>([]);
 
   useEffect(() => {
-    getAccessTokenSilently({
-      audience: import.meta.env.VITE_AUDIENCE,
-    })
-      .then((token) =>
-        axios.get(`${import.meta.env.VITE_AUDIENCE}/users/${userName}/blogs`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      )
-      .then((response) => {
-        const blogsList = response.data;
-        setBlogPosts(
-          blogsList.filter(({ published }: { published: boolean }) => published)
-        );
-      });
+    const abortController: AbortController = new AbortController();
+    (async () => {
+      const req = await request();
+      const { data } = await req.get(`/users/${userName}/blogs`);
+      setBlogPosts(
+        data.filter(({ published }: { published: boolean }) => published)
+      );
+    })();
+    return () => abortController?.abort();
   }, []);
 
   return (

@@ -1,5 +1,4 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import {useAuth0} from '@auth0/auth0-react';
 import {useEffect, useState} from 'react';
 import log from 'loglevel';
 import HomePage from './components/HomePage';
@@ -26,16 +25,15 @@ import useApi from './hooks/useApi';
 function App() {
   // Every user will have one profile, and can be involved in multiple rings.
   // A user can choose the allowed rings for a blog post
-  const { isAuthenticated, isLoading } = useAuth0();
-  const req = useApi();
+  const { request, isLoading, isAuthenticated } = useApi();
   const [username, setUsername] = useState("");
-
   useEffect(() => {
     const abortController: AbortController = new AbortController();
     (async () => {
       try {
-        const { data } = await req.get("/");
-        setUsername(data.username);
+        const req = await request();
+        const response = await req.get("");
+        setUsername(response.data.username);
       } catch (e) {
         log.error(e);
       }

@@ -1,10 +1,8 @@
 import { Link, NavLink, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { stateToHTML } from "draft-js-export-html";
 import { convertFromRaw } from "draft-js";
-import { useAuth0 } from "@auth0/auth0-react";
-import log from "loglevel";
+import useApi from "../hooks/useApi";
 
 interface Profile {
   content: string;
@@ -12,27 +10,22 @@ interface Profile {
 
 function UserProfile({ user }: { user: string }) {
   const { userName } = useParams();
-  log.info(`User comparison: ${userName}, ${user}`);
-  const { getAccessTokenSilently } = useAuth0();
+  const { request } = useApi();
   const [userProfile, setUserProfile] = useState<Profile>({ content: "" });
   useEffect(() => {
-    getAccessTokenSilently({
-      audience: import.meta.env.VITE_AUDIENCE,
-    })
-      .then((token) =>
-        axios.get(`${import.meta.env.VITE_AUDIENCE}/users/${userName}/`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      )
-      .then((response) => {
-        const givenUser = response.data;
-        log.info(`User Profile: ${response.data}`);
-        setUserProfile({
-          content: stateToHTML(
-            convertFromRaw(JSON.parse(givenUser.profilePage.content))
-          ),
-        });
+    const abortController: AbortController = new AbortController();
+
+    (async () => {
+      const req = await request();
+      const { data } = await req.get(`/users/${userName}`);
+      setUserProfile({
+        content: stateToHTML(
+          convertFromRaw(JSON.parse(data.profilePage.content))
+        ),
       });
+    })();
+
+    return () => abortController?.abort();
   }, []);
   const userHTML = (userH: string) => ({ __html: userH });
   return (
@@ -58,4 +51,3 @@ function UserProfile({ user }: { user: string }) {
 }
 
 export default UserProfile;
-// TODO: Use Draft JS to edit user profile (use the internal state to edit profile)
