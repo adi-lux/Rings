@@ -13,7 +13,7 @@ const postRing: RequestHandler = async (req, res, next) => {
 
 const getRings: RequestHandler = async (req, res, next) => {
   try {
-    const rings = RingService.getRings();
+    const rings = await RingService.getRings();
     return res.json({ rings });
   } catch (e) {
     return next(e);
@@ -33,7 +33,7 @@ const getRing: RequestHandler = async (req, res, next) => {
 const joinRing: RequestHandler = async (req, res, next) => {
   try {
     const name = req.params.ringname;
-    const {username} = req.body;
+    const { username } = req.body;
     const newRing = await RingService.joinRing(name, username);
     return res.json({ newRing });
   } catch (e) {

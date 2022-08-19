@@ -10,6 +10,7 @@ import ringsRouter from "./routes/ring.route";
 import initializeChat from "./setup/socket";
 
 dotenv.config();
+log.setDefaultLevel(2);
 
 const port = process.env.PORT || 8080;
 const chatPort = process.env.CHAT_PORT || 8081;

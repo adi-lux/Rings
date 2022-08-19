@@ -1,5 +1,4 @@
 import { RequestHandler } from "express";
-import log from "loglevel";
 import UserService from "../services/user.service";
 
 const getUsers: RequestHandler = async (req, res, next) => {
@@ -13,7 +12,7 @@ const getUsers: RequestHandler = async (req, res, next) => {
 
 const deleteUser: RequestHandler = async (req, res, next) => {
   try {
-    const {username} = req.params;
+    const { username } = req.params;
     const user = await UserService.deleteUser(username);
     return res.json({ user });
   } catch (e) {
@@ -23,7 +22,7 @@ const deleteUser: RequestHandler = async (req, res, next) => {
 
 const getUser: RequestHandler = async (req, res, next) => {
   try {
-    const username = req.params.user;
+    const { username } = req.params;
     const { profilePage } = await UserService.getUser(username);
     return res.json({ profilePage });
   } catch (e) {
@@ -33,8 +32,8 @@ const getUser: RequestHandler = async (req, res, next) => {
 const postUser: RequestHandler = async (req, res, next) => {
   try {
     // TODO: SANITIZE BLOG
-    const {content} = req.body;
-    const {username} = req.params;
+    const { content } = req.body;
+    const { username } = req.params;
     const updated = await UserService.postUser(content, username);
     return res.json({ updated });
   } catch (e) {
@@ -44,7 +43,7 @@ const postUser: RequestHandler = async (req, res, next) => {
 const updateUser: RequestHandler = async (req, res, next) => {
   try {
     // TODO: SANITIZE
-    const {username} = req.params;
+    const { username } = req.params;
     const { content } = req.body;
     const updated = await UserService.updateUser(username, content);
     return res.json({ updated });
@@ -55,7 +54,7 @@ const updateUser: RequestHandler = async (req, res, next) => {
 
 const getUserChat: RequestHandler = async (req, res, next) => {
   try {
-    const {username} = req.params;
+    const { username } = req.params;
     const { chatPage } = await UserService.getUserChat(username);
     return res.json({ chatPage });
   } catch (e) {
@@ -65,7 +64,6 @@ const getUserChat: RequestHandler = async (req, res, next) => {
 
 const getUserMetadata: RequestHandler = (req, res, next) => {
   try {
-    log.info(`user metadata: ${req}`);
     return res.json(req);
   } catch (e) {
     return next(e);
