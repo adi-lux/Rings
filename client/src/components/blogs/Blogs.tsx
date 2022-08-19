@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import useApi from "../hooks/useApi";
+import useApi from "../../hooks/useApi";
 
 type Blog = {
   _id: string;

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
 import { useState } from "react";
 import log from "loglevel";
-import useApi from "../hooks/useApi";
+import useApi from "../../hooks/useApi";
 
 type RingForm = {
   name: string;

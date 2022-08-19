@@ -2,7 +2,7 @@ import { Link, NavLink, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { stateToHTML } from "draft-js-export-html";
 import { convertFromRaw } from "draft-js";
-import useApi from "../hooks/useApi";
+import useApi from "../../hooks/useApi";
 
 interface Profile {
   content: string;

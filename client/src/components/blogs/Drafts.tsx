@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import useApi from "../hooks/useApi";
+import useApi from "../../hooks/useApi";
 
 interface Blog {
   _id: string;
@@ -18,7 +18,6 @@ function Drafts({ user }: { user: string }) {
 
     (async () => {
       const req = await request();
-
       const { data } = await req.get(`/users/${userName}/blogs`);
       setBlogPosts(
         data.filter(({ published }: { published: boolean }) => !published)

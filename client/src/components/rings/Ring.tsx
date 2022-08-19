@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import log from "loglevel";
-import useApi from "../hooks/useApi";
+import useApi from "../../hooks/useApi";
 
 function Ring({ user }: { user: string }) {
   const { request } = useApi();

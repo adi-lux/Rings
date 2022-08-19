@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import useApi from '../hooks/useApi';
+import useApi from '../../hooks/useApi';
 
 // TODO: Restrict users to only  being able to see people in their rings
 function Users() {

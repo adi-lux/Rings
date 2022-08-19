@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { MouseEventHandler, useEffect, useState } from "react";
 import io from "socket.io-client";
 import log from "loglevel";
-import useApi from "../hooks/useApi";
+import useApi from "../../hooks/useApi";
 
 interface ChatMessage {
   roomOwner: String;

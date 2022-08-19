@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Navigate } from "react-router-dom";
 import { useState } from "react";
-import useApi from "../hooks/useApi";
+import useApi from "../../hooks/useApi";
 
 type ProfileForm = {
   content: EditorState;

@@ -5,7 +5,7 @@ import { stateToHTML } from "draft-js-export-html";
 import { convertFromRaw } from "draft-js";
 import { useForm } from "react-hook-form";
 import log from "loglevel";
-import useApi from "../hooks/useApi";
+import useApi from "../../hooks/useApi";
 
 type Comment = {
   content: string;

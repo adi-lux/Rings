@@ -3,7 +3,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import log from "loglevel";
-import useApi from "../hooks/useApi";
+import useApi from "../../hooks/useApi";
 
 interface Ring {
   name: string;

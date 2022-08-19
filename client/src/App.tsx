@@ -1,22 +1,22 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import log from 'loglevel';
-import HomePage from './components/HomePage';
-import Rings from './components/Rings';
-import Ring from './components/Ring';
-import UserProfile from './components/UserProfile';
-import Layout from './components/Layout';
-import Blogs from './components/Blogs';
-import Chat from './components/Chat';
-import BlogPost from './components/BlogPost';
-import Users from './components/Users';
-import NotFound from './components/NotFound';
-import CreateBlog from './components/CreateBlog';
-import EditBlog from './components/EditBlog';
-import Drafts from './components/Drafts';
-import CreateProfile from './components/CreateProfile';
-import EditProfile from './components/EditProfile';
-import CreateRing from './components/CreateRing';
+import HomePage from './components/structurres/HomePage';
+import Rings from './components/rings/Rings';
+import Ring from './components/rings/Ring';
+import UserProfile from './components/users/UserProfile';
+import Layout from './components/structurres/Layout';
+import Blogs from './components/blogs/Blogs';
+import Chat from './components/users/Chat';
+import BlogPost from './components/blogs/BlogPost';
+import Users from './components/users/Users';
+import NotFound from './components/structurres/NotFound';
+import CreateBlog from './components/blogs/CreateBlog';
+import EditBlog from './components/blogs/EditBlog';
+import Drafts from './components/blogs/Drafts';
+import CreateProfile from './components/users/CreateProfile';
+import EditProfile from './components/users/EditProfile';
+import CreateRing from './components/rings/CreateRing';
 import useApi from './hooks/useApi';
 
 // TODO: Refactor functionality and remove redundancy
