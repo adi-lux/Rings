@@ -41,9 +41,9 @@ Once you set up a local environment, you can experiment with the website as you 
 The features for this application are essentially complete. However, there do exist some issues that still need to be
 taken care of.
 
-1. There exist difficulties with deploying currently. This is probably due to Auth0. When Vercel client application
-   attempts to connect to the server after logging in, it is kicked out.
-2. Socket.io integration works locally, but not when deployed.
+1. Socket.io integration works locally, but not when deployed. This is because HTTPS connections are not yet supported
+   with my current implementation of Socket.io. Therefore, I will have to improve the current version to an HTTPS
+   server.
 
 ## Contributing
 
