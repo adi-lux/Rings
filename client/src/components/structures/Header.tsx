@@ -4,11 +4,18 @@ import { useAuth0 } from "@auth0/auth0-react";
 function Header({ user }: { user: string }) {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
   return (
-    <header className="box-border bg-theme-gray text-theme-white h-20 shadow-lg grid grid-cols-2">
-      <Link to="/" className="pl-10 self-center w-full text-3xl font-bold">
-        BlogRings
+    <header className="grid grid-cols-2 box-border pl-2 pr-2 shadow-lg bg-theme-lightblue">
+      <Link
+        to="/"
+        className="self-center col-span-1 m-5 font-bold text-theme-black sm:text-md md:text-2xl lg:text-3xl"
+      >
+        <img
+          src="logo.svg"
+          alt="BlogRings logo"
+          className="self-center max-h-16"
+        />
       </Link>
-      <nav className="items-center pr-10 flex justify-end gap-10 w-full justify-self-end self-center">
+      <nav className="justify-self-end self-center col-span-1 flex items-center justify-end gap-5 m-5 sm:text-xs md:text-md lg:text-lg">
         <NavLink
           className={({ isActive }) => (isActive ? "font-bold" : "font-normal")}
           to="/rings"

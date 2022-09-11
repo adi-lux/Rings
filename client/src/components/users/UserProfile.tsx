@@ -44,7 +44,6 @@ function UserProfile({ user }: { user: string }) {
         <NavLink to="">Profile</NavLink>
         <NavLink to="blogs">Blogs</NavLink>
         <NavLink to="chat">Chat!</NavLink>
-        <NavLink to="friends">Friends</NavLink>
       </nav>
     </div>
   );

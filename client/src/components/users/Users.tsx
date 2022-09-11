@@ -20,13 +20,35 @@ function Users() {
     return () => abortController?.abort();
   }, []);
   return (
-    <div>
-      User:{" "}
+    <div className="grid p-10 gap-3">
+      <h1 className="font-bold text-2xl">User List</h1>
+      <hr />
       {userList.map((user) => (
-        <p key={user}>
-          <Link to={user}>{user} / </Link>{" "}
-          <Link to={`${user}/blogs`}>Blogs</Link>
-        </p>
+        <div
+          key={user}
+          className="w-full h-20 flex justify-between px-5 flex-row bg-theme-babyblue items-center rounded-xl pl-5  border-2 border-white"
+        >
+          <Link
+            to={user}
+            className="font-bold hover:text-theme-mediumblue active:opacity-95"
+          >
+            {user}
+          </Link>
+          <div className="flex gap-4">
+            <Link
+              to={`${user}/blogs`}
+              className="italic hover:text-theme-mediumblue active:opacity-95"
+            >
+              Blogs
+            </Link>
+            <Link
+              to={`${user}/chat`}
+              className="italic hover:text-theme-mediumblue active:opacity-95"
+            >
+              Chat
+            </Link>
+          </div>
+        </div>
       ))}
     </div>
   );

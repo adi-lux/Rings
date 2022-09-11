@@ -1,16 +1,16 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import log from 'loglevel';
-import HomePage from './components/structurres/HomePage';
+import HomePage from './components/structures/HomePage';
 import Rings from './components/rings/Rings';
 import Ring from './components/rings/Ring';
 import UserProfile from './components/users/UserProfile';
-import Layout from './components/structurres/Layout';
+import Layout from './components/structures/Layout';
 import Blogs from './components/blogs/Blogs';
 import Chat from './components/users/Chat';
 import BlogPost from './components/blogs/BlogPost';
 import Users from './components/users/Users';
-import NotFound from './components/structurres/NotFound';
+import NotFound from './components/structures/NotFound';
 import CreateBlog from './components/blogs/CreateBlog';
 import EditBlog from './components/blogs/EditBlog';
 import Drafts from './components/blogs/Drafts';
@@ -23,8 +23,7 @@ import useApi from './hooks/useApi';
 // TODO: Create proper UI layout
 
 function App() {
-  // Every user will have one profile, and can be involved in multiple rings.
-  // A user can choose the allowed rings for a blog post
+  // Abstracts away the authentication part of Api calls
   const { request, isLoading, isAuthenticated } = useApi();
   const [username, setUsername] = useState("");
   useEffect(() => {
@@ -45,7 +44,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout user={username} />}>
-          <Route index element={<HomePage />} />
+          <Route index element={<HomePage username={username} />} />
           {isAuthenticated ? (
             <>
               <Route path="rings">

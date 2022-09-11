@@ -32,12 +32,21 @@ function Rings() {
   }, []);
 
   return (
-    <div>
-      <Link to="create">Make one!</Link>
-      <p>Rings</p>
+    <div className="grid p-10 gap-3">
+      <Link to="create" className="classic-btn text-white">
+        Make a new ring!
+      </Link>
+      <div>
+        <h1 className="text-4xl">All Rings</h1>
+        <hr />
+      </div>
       {ringList.map((ring) => (
-        <Link key={ring.name} to={ring.name}>
-          <p>{ring.name}</p>
+        <Link
+          key={ring.name}
+          to={ring.name}
+          className="w-full h-20 flex bg-theme-babyblue items-center rounded-xl pl-5 grid border-2 border-white hover:shadow-lg active:opacity-95"
+        >
+          <p className="text-2xl">{ring.name}</p>
         </Link>
       ))}
     </div>

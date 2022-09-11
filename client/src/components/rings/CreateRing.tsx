@@ -38,17 +38,34 @@ function CreateRing({ username }: { username: string }) {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onFormSubmit)}>
-        <label htmlFor="name">
-          Ring Name:
-          <input id="name" {...register("name", { required: true })} />
+      <form
+        onSubmit={handleSubmit(onFormSubmit)}
+        className="grid grid-cols-[90px_1fr] p-10 justify-items-center gap-2"
+      >
+        <h1 className="text-2xl font-bold col-span-full">Ring Details</h1>
+        <hr className="col-span-full" />
+        <label htmlFor="name" className="font-bold">
+          Name:
         </label>
-        <label htmlFor="privacy">
+        <input
+          id="name"
+          {...register("name", { required: true })}
+          className="w-full border-2 border-theme-babyblue rounded-md pl-2"
+        />
+        <label htmlFor="privacy" className="font-bold">
           Private:
-          <input id="privacy" {...register("privacy")} type="checkbox" />
         </label>
-        <button type="submit" className="bg-blue-200">
-          Submit
+        <input
+          id="privacy"
+          {...register("privacy")}
+          type="checkbox"
+          className="justify-self-start"
+        />
+        <button
+          type="submit"
+          className="classic-btn col-span-full w-full place-self-center text-white"
+        >
+          Create
         </button>
       </form>
       {posted && <Navigate to={`/rings/${finalRingName}/`} />}

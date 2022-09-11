@@ -39,18 +39,30 @@ function Ring({ user }: { user: string }) {
     }
   };
   return (
-    <>
+    <div className="grid grid-flow-row p-10 gap-2">
       {!userList.includes(user) && (
-        <button type="button" onClick={joinRing}>
-          Join!
-        </button>
+        <>
+          <button
+            type="button"
+            onClick={joinRing}
+            className="classic-btn text-white"
+          >
+            Join Ring
+          </button>
+        </>
       )}
+
+      <h1 className="font-bold text-2xl">User List</h1>
+      <hr />
       {userList.map((person) => (
-        <p key={person}>
+        <p
+          key={person}
+          className="w-full h-20 flex bg-theme-babyblue items-center rounded-xl pl-5 grid border-2 border-white hover:shadow-lg active:opacity-95"
+        >
           <Link to={`/users/${person}`}>{person}</Link>
         </p>
       ))}
-    </>
+    </div>
   );
 }
 
