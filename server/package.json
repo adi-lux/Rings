@@ -4,9 +4,10 @@
   "main": "dist/index.js",
   "scripts": {
     "lint": "eslint --ext .ts --ignore-path .gitignore --fix src",
-    "start": "nodemon ./src/index.ts",
+    "start": "node dist/index.js",
     "preview": "nodemon ./src/index.ts",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "build": "tsc"
   },
   "jest": {
     "moduleFileExtensions": [
