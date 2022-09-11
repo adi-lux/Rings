@@ -21,7 +21,14 @@ dbConnect(mongo).catch(() => log.error("Could not connect to the database."));
 const app = express();
 
 app.use(cors());
-app.use(auth());
+app.use(
+  auth({
+    issuerBaseURL: process.env.ISSUER_BASE_URL,
+    audience: process.env.AUDIENCE,
+    secret: process.env.SECRET,
+    tokenSigningAlg: "HS256",
+  })
+);
 app.use(express.json());
 
 initializeChat(chatPort);
