@@ -67,11 +67,21 @@ function EditBlog() {
   const publish = (saved: boolean) => () => setPublished(saved);
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onFormSubmit)}>
-        <label htmlFor="title">
-          Title: <input id="title" {...register("title", { required: true })} />
-        </label>
+    <div className="grid p-10 gap-4">
+      <form
+        onSubmit={handleSubmit(onFormSubmit)}
+        className="border-2 rounded-lg  rounded-bl-none rounded-br-none border-theme-babyblue"
+      >
+        <div className="flex gap-2 p-2">
+          <label htmlFor="title" className="font-bold">
+            Title:
+          </label>
+          <input
+            id="title"
+            {...register("title", { required: true })}
+            className="bg-blue-50 w-full rounded-xl px-2"
+          />
+        </div>
         <Controller
           name="content"
           control={control}
@@ -86,15 +96,21 @@ function EditBlog() {
             />
           )}
         />
-        <button type="submit" className="bg-blue-200" onClick={publish(true)}>
-          Submit
-        </button>
-        <button type="submit" className="bg-blue-200">
-          Save as Draft
-        </button>
+        <div className="flex gap-1 p-1">
+          <button
+            type="submit"
+            onClick={publish(true)}
+            className="classic-btn w-full rounded-none"
+          >
+            Submit
+          </button>
+          <button type="submit" className="classic-btn w-full rounded-none">
+            Save as Draft
+          </button>
+        </div>
       </form>
       {posted && <Navigate to={`/users/${userName}/blogs/${blogId}`} replace />}
-    </>
+    </div>
   );
 }
 

@@ -9,7 +9,7 @@ type Blog = {
   content: string;
 };
 
-function Blogs() {
+function Blogs({ user }: { user: string }) {
   const { userName } = useParams();
   const { request } = useApi();
   const [blogPosts, setBlogPosts] = useState<Blog[]>([]);
@@ -27,14 +27,44 @@ function Blogs() {
   }, []);
 
   return (
-    <div>
+    <div className="grid p-10 gap-4">
+      {userName === user && (
+        <div className="flex gap-3">
+          <Link to="/create" className="classic-btn text-white">
+            Make a new blog!
+          </Link>
+          <Link
+            to={`/users/${userName}/drafts`}
+            className="classic-btn text-white"
+          >
+            Edit your drafts!
+          </Link>
+        </div>
+      )}
+
+      <div>
+        <h1 className="text-4xl">All Blogs</h1>
+        <hr />
+      </div>
       {blogPosts.map((blogPost) => (
-        <div key={blogPost._id}>
-          <b>Title:</b>{" "}
-          <Link to={`${encodeURIComponent(blogPost._id)}`}>
+        <div
+          key={blogPost._id}
+          className="text-white w-full px-3 h-20 grid-cols-2 bg-theme-mediumblue items-center rounded-xl pl-5 grid border-2 border-white hover:shadow-lg active:opacity-95"
+        >
+          <Link
+            to={`${encodeURIComponent(blogPost._id)}`}
+            className="text-2xl font-bold"
+          >
             {blogPost.title}
           </Link>
-          <br />
+          {userName === user && (
+            <Link
+              to={`${encodeURIComponent(blogPost._id)}/edit`}
+              className="italic justify-self-end hover:text-theme-lightblue"
+            >
+              Edit
+            </Link>
+          )}
         </div>
       ))}
     </div>

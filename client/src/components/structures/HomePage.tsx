@@ -6,11 +6,6 @@ function HomePage({ username }: { username: string }) {
 
   return (
     <main className="grid p-10 gap-4">
-      <img
-        src="rings.svg"
-        alt="rings logo"
-        className="col-start-2 col-end-3 row-span-4 max-h-52"
-      />
       <h1 className="row-span-1 text-4xl font-bold text-left text-theme-mediumblue animate-pulse">
         Welcome to BlogRings
       </h1>
@@ -35,12 +30,13 @@ function HomePage({ username }: { username: string }) {
         <hr />
         <p className="text-lg">
           BlogRings is a platform intended to indulge in the earlier ages of the
-          internet, back when forums were dominant and social media wasn't as
-          prevalent. The inspiration came from the idea of a 'Web Ring', where
-          users could link other peoples' blogs to give more exposure to them.
+          internet, back when forums were dominant and social media was not as
+          prevalent. The inspiration came from the idea of a Web Ring, where
+          users could link other peoples blogs to give more exposure to them.
           With BlogRings, you have social circles of rings, which act as a
           replacement for the modern day group chat. Users of a ring could
-          access other users' blogs, and chat in their chat rooms.
+          access other user blogs, and chat in their chat rooms. You will need
+          to create an account to access the entire website.
         </p>
       </div>
     </main>

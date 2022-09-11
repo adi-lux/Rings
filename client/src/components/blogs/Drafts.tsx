@@ -28,14 +28,16 @@ function Drafts({ user }: { user: string }) {
   }, []);
 
   return (
-    <>
-      <h1>Your Drafts</h1>
+    <div className="grid p-10 gap-4">
+      <h1 className="text-4xl">Your Drafts</h1>
       {user === (userName as string) && (
         <>
           {blogPosts.map((blogPost) => (
-            <div>
-              <b>Title: </b>
-              <Link to={`${encodeURIComponent(blogPost._id)}`}>
+            <div className="text-white w-full px-3 h-20 grid-cols-2 bg-theme-mediumblue items-center rounded-xl pl-5 grid border-2 border-white hover:shadow-lg active:opacity-95">
+              <Link
+                to={`${encodeURIComponent(blogPost._id)}`}
+                className="text-2xl font-bold"
+              >
                 {blogPost.title}
               </Link>
               <br />
@@ -43,7 +45,7 @@ function Drafts({ user }: { user: string }) {
           ))}
         </>
       )}
-    </>
+    </div>
   );
 }
 

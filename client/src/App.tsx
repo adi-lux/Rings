@@ -68,7 +68,7 @@ function App() {
                     element={<EditProfile username={username} />}
                   />
                   <Route path="blogs">
-                    <Route index element={<Blogs />} />
+                    <Route index element={<Blogs user={username} />} />
                     <Route path=":blogId">
                       <Route index element={<BlogPost user={username} />} />
                       <Route path="edit" element={<EditBlog />} />
@@ -89,9 +89,27 @@ function App() {
             </>
           ) : undefined}
           {isLoading ? (
-            <Route path="*" element={<p>LOADING!!</p>} />
+            <Route
+              path="*"
+              element={
+                <div className="grid bg-theme-mediumblue h-full">
+                  <p className="place-self-center text-5xl text-white h-full w-full place-self-center text-center grid place-items-center">
+                    Loading
+                  </p>
+                </div>
+              }
+            />
           ) : (
-            <Route path="*" element={<p>Sign in!!!</p>} />
+            <Route
+              path="*"
+              element={
+                <div className="grid bg-theme-mediumblue h-full">
+                  <p className="place-self-center text-5xl text-white h-full w-full place-self-center text-center grid place-items-center">
+                    Sign in to access everything.
+                  </p>
+                </div>
+              }
+            />
           )}
         </Route>
       </Routes>

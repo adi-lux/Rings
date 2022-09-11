@@ -32,8 +32,12 @@ function CreateProfile({ username }: { username: string }) {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onFormSubmit)}>
+    <div className="grid p-10 gap-4">
+      <h1 className="font-bold text-2xl">Create {username} profile</h1>
+      <form
+        onSubmit={handleSubmit(onFormSubmit)}
+        className="border-2 rounded-lg  rounded-bl-none rounded-br-none border-theme-babyblue"
+      >
         <Controller
           name="content"
           control={control}
@@ -48,12 +52,12 @@ function CreateProfile({ username }: { username: string }) {
             />
           )}
         />
-        <button type="submit" className="bg-blue-200">
+        <button type="submit" className="classic-btn w-full rounded-none">
           Submit
         </button>
       </form>
       {posted && <Navigate to={`/users/${username}/`} />}
-    </>
+    </div>
   );
 }
 

@@ -4,7 +4,7 @@
 
 @layer components {
     .classic-btn {
-        @apply bg-theme-mediumblue w-fit rounded-2xl text-center self-center hover:opacity-90 hover:text-theme-lightblue sm:text-xs md:text-lg active:shadow-md shadow-theme-lightblue p-2;
+        @apply bg-theme-mediumblue text-white w-fit rounded-2xl text-center self-center hover:opacity-90 hover:text-theme-lightblue sm:text-xs md:text-lg active:shadow-md shadow-theme-lightblue p-2;
 
     }
 }

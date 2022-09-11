@@ -60,10 +60,13 @@ function EditProfile({ username }: { username: string }) {
   };
 
   return (
-    <>
-      <h1>Edit {userName} profile</h1>
+    <div className="grid p-10 gap-4">
+      <h1 className="font-bold text-2xl">Edit {userName} profile</h1>
       {username === userName && (
-        <form onSubmit={handleSubmit(onFormSubmit)}>
+        <form
+          onSubmit={handleSubmit(onFormSubmit)}
+          className="border-2 rounded-lg  rounded-bl-none rounded-br-none border-theme-babyblue"
+        >
           <Controller
             name="content"
             control={control}
@@ -78,13 +81,13 @@ function EditProfile({ username }: { username: string }) {
               />
             )}
           />
-          <button type="submit" className="bg-blue-200">
+          <button type="submit" className="classic-btn w-full rounded-none">
             Submit
           </button>
         </form>
       )}
       {posted && <Navigate to={`/users/${userName}`} replace />}
-    </>
+    </div>
   );
 }
 

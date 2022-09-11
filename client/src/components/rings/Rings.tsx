@@ -32,7 +32,7 @@ function Rings() {
   }, []);
 
   return (
-    <div className="grid p-10 gap-3">
+    <div className="grid p-10 gap-4">
       <Link to="create" className="classic-btn text-white">
         Make a new ring!
       </Link>

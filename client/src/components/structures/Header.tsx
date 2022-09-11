@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import assetUrl from "../../assets/logo.svg";
 
 function Header({ user }: { user: string }) {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
@@ -10,7 +11,7 @@ function Header({ user }: { user: string }) {
         className="self-center col-span-1 m-5 font-bold text-theme-black sm:text-md md:text-2xl lg:text-3xl"
       >
         <img
-          src="logo.svg"
+          src={assetUrl}
           alt="BlogRings logo"
           className="self-center max-h-16"
         />

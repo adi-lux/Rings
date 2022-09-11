@@ -41,15 +41,13 @@ function Ring({ user }: { user: string }) {
   return (
     <div className="grid grid-flow-row p-10 gap-2">
       {!userList.includes(user) && (
-        <>
-          <button
+        <button
             type="button"
             onClick={joinRing}
             className="classic-btn text-white"
           >
             Join Ring
           </button>
-        </>
       )}
 
       <h1 className="font-bold text-2xl">User List</h1>

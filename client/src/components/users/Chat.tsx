@@ -5,10 +5,10 @@ import log from "loglevel";
 import useApi from "../../hooks/useApi";
 
 interface ChatMessage {
-  roomOwner: String;
-  commenter: String;
-  timestamp: String;
-  content: String;
+  roomOwner: string;
+  commenter: string;
+  timestamp: string;
+  content: string;
 }
 
 const socket = io("http://localhost:3002");
@@ -21,7 +21,10 @@ function Chat({ user }: { user: string }) {
   const { request } = useApi();
 
   const messageHandler: MouseEventHandler<HTMLButtonElement> = () => {
-    socket.emit("message", userName, user, currentMessage);
+    if (currentMessage) {
+      socket.emit("message", userName, user, currentMessage);
+      setCurrentMessage("");
+    }
   };
   useEffect(() => {
     const abortController: AbortController = new AbortController();
@@ -60,22 +63,33 @@ function Chat({ user }: { user: string }) {
   });
 
   return (
-    <>
-      <input
-        type="text"
-        onChange={(e) => setCurrentMessage(e.currentTarget.value)}
-      />
-      <button type="button" onClick={messageHandler}>
-        submit
-      </button>
+    <div className="grid p-10 gap-2">
+      <h1 className="font-bold text-2xl">Chat with {user}</h1>
       {messageList.map((chat) => (
-        <div key={chat.timestamp + userName!}>
-          <p>{chat.commenter}</p>
-          <p>{chat.timestamp}</p>
+        <div
+          key={chat.timestamp + userName!}
+          className="grid grid-cols-2 w-full h-20 flex justify-between px-5 flex-row bg-blue-200 items-center rounded-xl pl-5  border-2 border-white"
+        >
+          <b>{chat.commenter}</b>
+          <i className="justify-self-end">
+            {new Date(chat.timestamp).toLocaleString()}
+          </i>
           <p>{chat.content}</p>
         </div>
       ))}
-    </>
+
+      <div className="flex flex-row">
+        <input
+          type="text"
+          value={currentMessage}
+          onChange={(e) => setCurrentMessage(e.currentTarget.value)}
+          className="border-2 rounded-lg w-full"
+        />
+        <button type="button" className="classic-btn" onClick={messageHandler}>
+          Submit
+        </button>
+      </div>
+    </div>
   );
 }
 

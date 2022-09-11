@@ -31,6 +31,11 @@ module.exports = {
             "error",
             {"allow": ["_id"]}
         ],
+        "jsx-a11y/label-has-associated-control": ["error", {
+            "required": {
+                "some": ["nesting", "id"]
+            }
+        }],
         "react/no-danger": 'off', // We frequently use innerHtml for rich content
         "react/jsx-filename-extension": [1, {"extensions": [".ts", ".tsx"]}], //should add ".ts" if typescript project
     }

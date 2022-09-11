@@ -20,8 +20,8 @@ function Users() {
     return () => abortController?.abort();
   }, []);
   return (
-    <div className="grid p-10 gap-3">
-      <h1 className="font-bold text-2xl">User List</h1>
+    <div className="grid p-10 gap-4">
+      <h1 className="text-4xl">User List</h1>
       <hr />
       {userList.map((user) => (
         <div
