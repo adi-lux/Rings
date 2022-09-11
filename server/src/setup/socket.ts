@@ -4,7 +4,8 @@ import log from "loglevel";
 import ChatMessage from "../models/chat-message.model";
 import User from "../models/user.model";
 
-const initializeChat = (port: string | 8081) => {
+const initializeChat = (port: number | 8081) => {
+  const host = process.env.HOST;
   const httpServer = createServer();
   const io = new Server(httpServer, { cors: { origin: "*" } });
 
@@ -39,7 +40,7 @@ const initializeChat = (port: string | 8081) => {
     });
   });
 
-  httpServer.listen(port, () => {
+  httpServer.listen(port, host, () => {
     log.info(`Chat log running at ${port}`);
   });
 };

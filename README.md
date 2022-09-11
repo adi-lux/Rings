@@ -43,6 +43,7 @@ taken care of.
 
 1. There exist difficulties with deploying currently. This is probably due to Auth0. When Vercel client application
    attempts to connect to the server after logging in, it is kicked out.
+2. Socket.io integration works locally, but not when deployed.
 
 ## Contributing
 

@@ -13,7 +13,7 @@ dotenv.config();
 log.setDefaultLevel(2);
 
 const port: number = Number(process.env.PORT) || 8080;
-const chatPort = process.env.CHAT_PORT || 8081;
+const chatPort = Number(process.env.CHAT_PORT) || 8081;
 const mongo = process.env.MONGO_URI;
 const host = process.env.HOST;
 
