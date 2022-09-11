@@ -25,8 +25,6 @@ app.use(
   auth({
     issuerBaseURL: process.env.ISSUER_BASE_URL,
     audience: process.env.AUDIENCE,
-    secret: process.env.SECRET,
-    tokenSigningAlg: "HS256",
   })
 );
 app.use(express.json());

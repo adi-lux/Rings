@@ -11,7 +11,7 @@ interface ChatMessage {
   content: string;
 }
 
-const socket = io("http://localhost:3002");
+const socket = io(`${import.meta.env.VITE_AUDIENCE}:3002`);
 
 function Chat({ user }: { user: string }) {
   // const [connected, setConnected] = useState(socket.connected);
