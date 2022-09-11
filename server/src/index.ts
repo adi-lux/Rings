@@ -12,7 +12,7 @@ import initializeChat from "./setup/socket";
 dotenv.config();
 log.setDefaultLevel(2);
 
-const port = process.env.PORT || 8080;
+const port: number = Number(process.env.PORT) || 8080;
 const chatPort = process.env.CHAT_PORT || 8081;
 const mongo = process.env.MONGO_URI;
 
@@ -30,6 +30,6 @@ app.use("/users", userRouter);
 app.use("/rings", ringsRouter);
 app.use("/", homeRouter);
 
-app.listen(port, () => {
-  log.info(`server started at http://127.0.0.1:${port}`);
+app.listen(port, "0.0.0.0", () => {
+  log.info(`Server listening on http://0.0.0.0:${port}`);
 });
